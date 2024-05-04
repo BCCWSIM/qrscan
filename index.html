@@ -82,9 +82,8 @@
         let scanner = new Instascan.Scanner({ video: document.getElementById('preview') });
         let scannedCodes = [];
         let lastScannedTime = Date.now();
-        scanner.addListener('scan', function (content) {
-            // Only record the code if it's been more than 0.05 seconds since the last scan
-            if (Date.now() - lastScannedTime > 50) { // Reduced delay to 50ms
+        scanner.addListener('scan', function (content) {            
+            if (Date.now() - lastScannedTime > 100) { 
                 scannedCodes.push(content);
                 document.querySelector('#info-window').innerHTML = 'Scanned QR Codes: <br>' + scannedCodes.join('<br>');
                 lastScannedTime = Date.now();
