@@ -43,6 +43,7 @@
     <video id="preview"></video>
     <button class="game-button" id="scan-button">Scan QR Code</button>
     <button class="game-button" id="stop-button">Stop Scanner</button>
+    <button class="game-button" id="toggle-button">Toggle Camera</button>
     <div class="info-window" id="info-window">
         <!-- Information will be displayed here -->
     </div>
@@ -65,11 +66,15 @@
                 beep.play();
             }
         });
-          document.querySelector('#scan-button').addEventListener('click', function() {
-            Instascan.Camera.getCameras().then(function (cameras) {
-                if (cameras.length > 0) {
-                    // Use the last camera (usually the rear camera)
-                    scanner.start(cameras[cameras.length - 1]);
+
+        let currentCameraIndex = 0;
+        let cameras = [];
+
+        document.querySelector('#scan-button').addEventListener('click', function() {
+            Instascan.Camera.getCameras().then(function (availableCameras) {
+                if (availableCameras.length > 0) {
+                    cameras = availableCameras;
+                    scanner.start(cameras[currentCameraIndex]);
                 } else {
                     console.error('No cameras found.');
                 }
@@ -77,8 +82,16 @@
                 console.error(e);
             });
         });
+
         document.querySelector('#stop-button').addEventListener('click', function() {
             scanner.stop();
+        });
+
+        document.querySelector('#toggle-button').addEventListener('click', function() {
+            if (cameras.length > 1) {
+                currentCameraIndex = ++currentCameraIndex % cameras.length; // toggle camera
+                scanner.start(cameras[currentCameraIndex]);
+            }
         });
     </script>
 </body>
