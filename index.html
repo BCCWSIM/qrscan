@@ -98,6 +98,13 @@
                 setTimeout(function() {
                     flash.style.opacity = 0;
                 }, 100);
+
+                // Flash the target on successful scan
+                let target = document.querySelector('#target');
+                target.style.borderColor = 'red';
+                setTimeout(function() {
+                    target.style.borderColor = '#44c767';
+                }, 100);
             }
         });
 
