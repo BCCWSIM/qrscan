@@ -76,6 +76,7 @@
                     cameras = availableCameras;
                     // Start with the rear camera
                     currentCameraIndex = cameras.length > 1 ? 1 : 0;
+                    scanner.mirror = currentCameraIndex === 0; // mirror the front camera
                     scanner.start(cameras[currentCameraIndex]);
                 } else {
                     console.error('No cameras found.');
@@ -91,8 +92,11 @@
 
         document.querySelector('#toggle-button').addEventListener('click', function() {
             if (cameras.length > 1) {
-                currentCameraIndex = ++currentCameraIndex % cameras.length; // toggle camera
-                scanner.start(cameras[currentCameraIndex]);
+                scanner.stop().then(() => {
+                    currentCameraIndex = ++currentCameraIndex % cameras.length; // toggle camera
+                    scanner.mirror = currentCameraIndex === 0; // mirror the front camera
+                    scanner.start(cameras[currentCameraIndex]);
+                });
             }
         });
     </script>
