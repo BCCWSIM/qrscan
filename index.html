@@ -47,6 +47,7 @@
             margin-left: -100px;
             margin-top: -100px;
             border: 2px solid #44c767;
+            display: none; /* Make the target invisible initially */
         }
         #flash {
             position: absolute;
@@ -63,10 +64,7 @@
 </head>
 <body>
     <h1>Scan QR Code</h1>
-    <div id="preview">
-        <div id="target"></div>
-        <div id="flash"></div>
-    </div>
+    <video id="preview"></video>
     <button class="game-button" id="scan-button">Scan QR Code</button>
     <button class="game-button" id="stop-button">Stop Scanner</button>
     <button class="game-button" id="toggle-button">Toggle Camera</button>
@@ -110,7 +108,10 @@
                     // Start with the rear camera
                     currentCameraIndex = cameras.length > 1 ? 1 : 0;
                     scanner.mirror = currentCameraIndex === 0; // mirror the front camera
-                    scanner.start(cameras[currentCameraIndex]);
+                    scanner.start(cameras[currentCameraIndex]).then(function() {
+                        // Make the target visible when the camera is on
+                        document.querySelector('#target').style.display = 'block';
+                    });
                 } else {
                     console.error('No cameras found.');
                 }
@@ -120,7 +121,10 @@
         });
 
         document.querySelector('#stop-button').addEventListener('click', function() {
-            scanner.stop();
+            scanner.stop().then(function() {
+                // Make the target invisible when the camera is off
+                document.querySelector('#target').style.display = 'none';
+            });
         });
 
         document.querySelector('#toggle-button').addEventListener('click', function() {
@@ -128,7 +132,10 @@
                 scanner.stop().then(() => {
                     currentCameraIndex = ++currentCameraIndex % cameras.length; // toggle camera
                     scanner.mirror = currentCameraIndex === 0; // mirror the front camera
-                    scanner.start(cameras[currentCameraIndex]);
+                    scanner.start(cameras[currentCameraIndex]).then(function() {
+                        // Make the target visible when the camera is on
+                        document.querySelector('#target').style.display = 'block';
+                    });
                 });
             }
         });
