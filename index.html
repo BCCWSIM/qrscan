@@ -83,8 +83,8 @@
         let scannedCodes = [];
         let lastScannedTime = Date.now();
         scanner.addListener('scan', function (content) {
-            // Only record the code if it's been more than 0.01 seconds since the last scan
-            if (Date.now() - lastScannedTime > 100) { 
+            // Only record the code if it's been more than 0.05 seconds since the last scan
+            if (Date.now() - lastScannedTime > 50) { // Reduced delay to 50ms
                 scannedCodes.push(content);
                 document.querySelector('#info-window').textContent = 'Scanned QR Codes: ' + scannedCodes.join(', ');
                 lastScannedTime = Date.now();
