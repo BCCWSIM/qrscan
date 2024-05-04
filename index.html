@@ -82,8 +82,8 @@
         let scannedCodes = [];
         let lastScannedTime = Date.now();
         scanner.addListener('scan', function (content) {
-            // Only record the code if it's been more than 0.5 seconds since the last scan
-            if (Date.now() - lastScannedTime > 200) {
+            // Only record the code if it's been more than 0.25 seconds since the last scan
+            if (Date.now() - lastScannedTime > 250) {
                 scannedCodes.push(content);
                 document.querySelector('#info-window').textContent = 'Scanned QR Codes: ' + scannedCodes.join(', ');
                 lastScannedTime = Date.now();
@@ -101,7 +101,7 @@
         let currentCameraIndex = 0;
         let cameras = [];
 
- document.querySelector('#scan-button').addEventListener('click', function() {
+        document.querySelector('#scan-button').addEventListener('click', function() {
             Instascan.Camera.getCameras().then(function (availableCameras) {
                 if (availableCameras.length > 0) {
                     cameras = availableCameras;
@@ -118,23 +118,6 @@
             }).catch(function (e) {
                 console.error(e);
             });
-        });
-
-       scanner.addListener('scan', function (content) {
-            // Only record the code if it's been more than 0.25 seconds since the last scan
-            if (Date.now() - lastScannedTime > 250) {
-                scannedCodes.push(content);
-                document.querySelector('#info-window').textContent = 'Scanned QR Codes: ' + scannedCodes.join(', ');
-                lastScannedTime = Date.now();
-                beep.play();
-
-                // Flash the screen on successful scan
-                let flash = document.querySelector('#flash');
-                flash.style.opacity = 1;
-                setTimeout(function() {
-                    flash.style.opacity = 0;
-                }, 100);
-            }
         });
 
         document.querySelector('#toggle-button').addEventListener('click', function() {
