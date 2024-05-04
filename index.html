@@ -64,10 +64,7 @@
 </head>
 <body>
     <h1>Scan QR Code</h1>
-    <div id="preview">
-        <div id="target"></div>
-        <div id="flash"></div>
-    </div>
+    <video id="preview"></video>
     <button class="game-button" id="scan-button">Scan QR Code</button>
     <button class="game-button" id="stop-button">Stop Scanner</button>
     <button class="game-button" id="toggle-button">Toggle Camera</button>
@@ -98,13 +95,6 @@
                 setTimeout(function() {
                     flash.style.opacity = 0;
                 }, 100);
-
-                // Flash the target on successful scan
-                let target = document.querySelector('#target');
-                target.style.borderColor = 'red';
-                setTimeout(function() {
-                    target.style.borderColor = '#44c767';
-                }, 100);
             }
         });
 
@@ -115,9 +105,9 @@
             Instascan.Camera.getCameras().then(function (availableCameras) {
                 if (availableCameras.length > 0) {
                     cameras = availableCameras;
-                    // Start with the front camera
-                    currentCameraIndex = 0;
-                    scanner.mirror = true; // mirror the front camera
+                    // Start with the rear camera
+                    currentCameraIndex = cameras.length > 1 ? 1 : 0;
+                    scanner.mirror = currentCameraIndex === 0; // mirror the front camera
                     scanner.start(cameras[currentCameraIndex]).then(function() {
                         // Make the target visible when the camera is on
                         document.querySelector('#target').style.display = 'block';
