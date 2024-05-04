@@ -85,7 +85,7 @@
             // Only record the code if it's been more than 0.25 seconds since the last scan
             if (Date.now() - lastScannedTime > 100) {
                 scannedCodes.push(content);
-                document.querySelector('#info-window').textContent = 'Scanned QR Codes: ' + scannedCodes.join(', ');
+                document.querySelector('#info-window').textContent = 'Scanned QR Codes:<br> ' + scannedCodes.join(', ');
                 lastScannedTime = Date.now();
                 beep.play();
 
