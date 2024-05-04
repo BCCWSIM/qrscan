@@ -74,6 +74,8 @@
             Instascan.Camera.getCameras().then(function (availableCameras) {
                 if (availableCameras.length > 0) {
                     cameras = availableCameras;
+                    // Start with the rear camera
+                    currentCameraIndex = cameras.length > 1 ? 1 : 0;
                     scanner.start(cameras[currentCameraIndex]);
                 } else {
                     console.error('No cameras found.');
