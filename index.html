@@ -101,12 +101,12 @@
         let currentCameraIndex = 0;
         let cameras = [];
 
-        document.querySelector('#scan-button').addEventListener('click', function() {
+ document.querySelector('#scan-button').addEventListener('click', function() {
             Instascan.Camera.getCameras().then(function (availableCameras) {
                 if (availableCameras.length > 0) {
                     cameras = availableCameras;
                     // Start with the rear camera
-                    currentCameraIndex = cameras.length > 1 ? 1 : 0;
+                    currentCameraIndex = cameras.length - 1; // this line is updated
                     scanner.mirror = currentCameraIndex === 0; // mirror the front camera
                     scanner.start(cameras[currentCameraIndex]).then(function() {
                         // Make the target visible when the camera is on
@@ -120,11 +120,21 @@
             });
         });
 
-        document.querySelector('#stop-button').addEventListener('click', function() {
-            scanner.stop().then(function() {
-                // Make the target invisible when the camera is off
-                document.querySelector('#target').style.display = 'none';
-            });
+        scanner.addListener('scan', function (content) {
+            // Only record the code if it's been more than 0.5 seconds since the last scan
+            if (Date.now() - lastScannedTime > 500) {
+                scannedCodes.push(content);
+                document.querySelector('#info-window').textContent = 'Scanned QR Codes: ' + scannedCodes.join(', ');
+                lastScannedTime = Date.now();
+                beep.play();
+
+                // Flash the screen on successful scan
+                let flash = document.querySelector('#flash');
+                flash.style.opacity = 1;
+                setTimeout(function() {
+                    flash.style.opacity = 0;
+                }, 100);
+            }
         });
 
         document.querySelector('#toggle-button').addEventListener('click', function() {
