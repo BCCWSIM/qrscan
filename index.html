@@ -120,9 +120,9 @@
             });
         });
 
-        scanner.addListener('scan', function (content) {
-            // Only record the code if it's been more than 0.5 seconds since the last scan
-            if (Date.now() - lastScannedTime > 500) {
+       scanner.addListener('scan', function (content) {
+            // Only record the code if it's been more than 0.25 seconds since the last scan
+            if (Date.now() - lastScannedTime > 250) {
                 scannedCodes.push(content);
                 document.querySelector('#info-window').textContent = 'Scanned QR Codes: ' + scannedCodes.join(', ');
                 lastScannedTime = Date.now();
