@@ -9,7 +9,7 @@
             font-family: 'Courier New', monospace;
         }
         .game-button {
-            display: inline-block;
+            display: block;
             background-color: #44c767;
             border-radius: 28px;
             border: 1px solid #18ab29;
@@ -118,6 +118,10 @@
             }).catch(function (e) {
                 console.error(e);
             });
+        });
+
+        document.querySelector('#stop-button').addEventListener('click', function() {
+            scanner.stop();
         });
 
         document.querySelector('#toggle-button').addEventListener('click', function() {
