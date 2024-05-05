@@ -65,6 +65,8 @@
 <body>
     <h1>Scan QR Code</h1>
     <video id="preview"></video>
+    <div id="target"></div> <!-- Added target -->
+    <div id="flash"></div> <!-- Added flash -->
     <button class="game-button" id="scan-button">Scan QR Code</button>
     <button class="game-button" id="stop-button">Stop Scanner</button>
     <button class="game-button" id="toggle-button">Toggle Camera</button>
@@ -122,6 +124,8 @@
 
         document.querySelector('#stop-button').addEventListener('click', function() {
             scanner.stop();
+            // Hide the target when the camera is off
+            document.querySelector('#target').style.display = 'none';
         });
 
         document.querySelector('#toggle-button').addEventListener('click', function() {
